@@ -263,9 +263,9 @@ const WordGuessingGame = () => {
       <div className="max-w-2xl mx-auto p-4">
         <Card>
           <CardContent className="p-6 text-center">
-            <h1 className="text-3xl font-bold mb-4">Chinese Word Challenge</h1>
+            <h1 className="text-3xl font-bold mb-4">Vocabulary Challenge</h1>
             <p className="text-lg mb-6">
-              Test your Chinese vocabulary! You have {GAME_DURATION} seconds to answer as many questions as possible.
+              Test your English vocabulary! You have {GAME_DURATION} seconds to answer as many questions as possible.
             </p>
             <Button onClick={startGame} className="w-full text-lg h-16">
               Start Game
