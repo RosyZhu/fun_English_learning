@@ -7,17 +7,18 @@ import { Progress } from "@/components/ui/progress";
 const GAME_DURATION = 50; // seconds
 const INCORRECT_ANSWER_DELAY = 2000; // 2 seconds delay for incorrect answers
 
-const styles = {
-  background: "bg-blue-50",
-  card: "bg-white",
-  text: "text-blue-900",
-  subtext: "text-blue-700",
-  buttonPrimary: "bg-blue-600 hover:bg-blue-700 text-white",
-  buttonOutline: "border-blue-600 text-blue-600 hover:bg-blue-50",
-  buttonSecondary: "bg-blue-100 hover:bg-blue-200 text-blue-800",
-  success: "text-blue-600",
-  error: "text-red-500"
-};
+interface Word {
+  english: string;
+  chinese: string;
+}
+
+interface Mistake {
+  english: string;
+  chinese: string;
+  selectedAnswer: string;
+}
+
+type GameState = 'start' | 'playing' | 'over' | 'review';
 
 // Complete word database
 const wordDatabase = [
@@ -132,9 +133,9 @@ const wordDatabase = [
 ];
 
 const WordGuessingGame = () => {
-  const [gameState, setGameState] = useState('start'); // 'start', 'playing', 'over', 'review'
-  const [currentWord, setCurrentWord] = useState(null);
-  const [options, setOptions] = useState([]);
+  const [gameState, setGameState] = useState<GameState>('start');
+  const [currentWord, setCurrentWord] = useState<Word | null>(null);
+  const [options, setOptions] = useState<string[]>([]);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [score, setScore] = useState(0);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
@@ -168,7 +169,7 @@ const WordGuessingGame = () => {
   };
 
   // Get random wrong answers
-  const getWrongAnswers = (correctAnswer, count = 3) => {
+  const getWrongAnswers = (correctAnswer: string, count = 3): string[] => {
     const otherAnswers = wordDatabase
       .filter(word => word.chinese !== correctAnswer)
       .map(word => word.chinese);
@@ -196,7 +197,7 @@ const WordGuessingGame = () => {
   };
 
   // Shuffle array helper function
-  const shuffleArray = (array) => {
+  const shuffleArray = <T,>(array: T[]): T[] => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -417,6 +418,10 @@ const WordGuessingGame = () => {
   }
 
   // Game screen
+  if (!currentWord) {
+    return null; // Or loading state
+  }
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <Card>
