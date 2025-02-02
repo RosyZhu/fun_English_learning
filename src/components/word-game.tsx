@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -136,13 +136,13 @@ const WordGuessingGame = () => {
   const [gameState, setGameState] = useState<GameState>('start');
   const [currentWord, setCurrentWord] = useState<Word | null>(null);
   const [options, setOptions] = useState<string[]>([]);
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [currentQuestionNumber, setCurrentQuestionNumber] = useState(1);
-  const [usedWords, setUsedWords] = useState(new Set());
+  const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
   const [timeRemaining, setTimeRemaining] = useState(GAME_DURATION);
   const [isActive, setIsActive] = useState(false);
-  const [mistakes, setMistakes] = useState([]);
+  const [mistakes, setMistakes] = useState<Mistake[]>([]);
 
   // Timer effect
   useEffect(() => {
@@ -214,8 +214,8 @@ const WordGuessingGame = () => {
   };
 
   // Handle answer selection
-  const handleAnswer = (answer, isSkip = false) => {
-    if (!isActive || selectedAnswer !== null) return;
+  const handleAnswer = (answer: string, isSkip = false) => {
+    if (!isActive || selectedAnswer !== null || !currentWord) return;
     
     setSelectedAnswer(answer);
     const isCorrect = !isSkip && answer === currentWord.chinese;
